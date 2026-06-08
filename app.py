@@ -14,7 +14,8 @@ def create_note():
         notes.append(data)
 
         return {
-        "message": "Success"
+        "message": "Success",
+        "note": data
     },201
     except Exception as e:
         return{
@@ -28,11 +29,11 @@ def get_notes():
 @app.route("/notes/<int:id>", methods=["DELETE"])
 def delete_note(id):
     if id>= len(notes):
-        return {"error":"Note not found"},400
+        return {"error":"Note not found"},404
     notes.pop(id)
     return{
         "message": "note deleted"
-    }
+    },200
 
 @app.route("/notes/<int:id>", methods=["PUT"])
 def update_note(id):
@@ -44,7 +45,7 @@ def update_note(id):
     notes[id] = data
     return {
         "message": "note updated"
-    }
+    },200
 
 if __name__ == "__main__":
     app.run(debug=True)
