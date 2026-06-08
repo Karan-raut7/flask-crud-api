@@ -11,16 +11,27 @@ def create_note():
         
         if "title" not in data:
             return {"error": "Title is required"}, 400
-        notes.append(data)
+        if "content" not in data:
+            return {"error": "Content is required"}, 400
+        note = {
+        "id": len(notes),
+        "title": data["title"],
+        "content": data["content"]
+}
 
-        return {
-        "message": "Success",
-        "note": data
+        notes.append(note)
+        return{
+        "message":"success",
+        "note":note
     },201
     except Exception as e:
-        return{
-            "error":str(e)
-        },500
+    
+    
+        return {
+        "error":str(e)
+           },500
+     
+
 @app.route("/notes", methods=["GET"])
 def get_notes():
     
@@ -42,7 +53,16 @@ def update_note(id):
     data = request.get_json()
     if not data:
         return{"error":"no json data provided"},400
-    notes[id] = data
+    notes[id] = {
+    "id": id,
+    "title": data["title"],
+    "content": data["content"]
+}
+    if "title" not in data:
+        return {"error": "Title is required"}, 400
+
+    if "content" not in data:
+        return {"error": "Content is required"}, 400
     return {
         "message": "note updated"
     },200
